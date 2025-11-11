@@ -1,0 +1,22 @@
+name: Validate Structure
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check directory structure
+        run: |
+          test -d backend/src/domain && echo "✓ Domain layer exists"
+          test -d backend/src/application && echo "✓ Application layer exists"
+          test -d backend/src/infrastructure && echo "✓ Infrastructure layer exists"
+          test -d backend/src/presentation && echo "✓ Presentation layer exists"
+          test -d frontend/src && echo "✓ Frontend exists"
+          test -d scrapers/src && echo "✓ Scrapers exists"
+          test -d infrastructure/kubernetes && echo "✓ Kubernetes config exists"
+          test -d infrastructure/terraform && echo "✓ Terraform config exists"
+          test -f .gitignore && echo "✓ .gitignore exists"
+          test -f backend/.env.example && echo "✓ Backend .env.example exists"
+          test -f frontend/.env.example && echo "✓ Frontend .env.example exists"
+          test -f scrapers/.env.example && echo "✓ Scrapers .env.example exists"
+
