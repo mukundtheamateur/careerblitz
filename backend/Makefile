@@ -4,21 +4,45 @@
 PYTHON := python
 VENV := venv
 
-# Detect OS and set appropriate paths
+# Detect OS and check if venv exists
 ifeq ($(OS),Windows_NT)
-    PIP := $(VENV)/Scripts/pip
-    PYTEST := $(VENV)/Scripts/pytest
-    BLACK := $(VENV)/Scripts/black
-    FLAKE8 := $(VENV)/Scripts/flake8
-    MYPY := $(VENV)/Scripts/mypy
-    UVICORN := $(VENV)/Scripts/uvicorn
+    VENV_EXISTS := $(wildcard $(VENV)/Scripts/pip.exe)
+    ifeq ($(VENV_EXISTS),)
+        # No venv, use system Python
+        PIP := pip
+        PYTEST := pytest
+        BLACK := black
+        FLAKE8 := flake8
+        MYPY := mypy
+        UVICORN := uvicorn
+    else
+        # Use venv
+        PIP := $(VENV)/Scripts/pip
+        PYTEST := $(VENV)/Scripts/pytest
+        BLACK := $(VENV)/Scripts/black
+        FLAKE8 := $(VENV)/Scripts/flake8
+        MYPY := $(VENV)/Scripts/mypy
+        UVICORN := $(VENV)/Scripts/uvicorn
+    endif
 else
-    PIP := $(VENV)/bin/pip
-    PYTEST := $(VENV)/bin/pytest
-    BLACK := $(VENV)/bin/black
-    FLAKE8 := $(VENV)/bin/flake8
-    MYPY := $(VENV)/bin/mypy
-    UVICORN := $(VENV)/bin/uvicorn
+    VENV_EXISTS := $(wildcard $(VENV)/bin/pip)
+    ifeq ($(VENV_EXISTS),)
+        # No venv, use system Python
+        PIP := pip
+        PYTEST := pytest
+        BLACK := black
+        FLAKE8 := flake8
+        MYPY := mypy
+        UVICORN := uvicorn
+    else
+        # Use venv
+        PIP := $(VENV)/bin/pip
+        PYTEST := $(VENV)/bin/pytest
+        BLACK := $(VENV)/bin/black
+        FLAKE8 := $(VENV)/bin/flake8
+        MYPY := $(VENV)/bin/mypy
+        UVICORN := $(VENV)/bin/uvicorn
+    endif
 endif
 
 help:
